@@ -1,0 +1,10 @@
+.DS_Store
+*.DS_Store
+tab-out-mockup-v4.html
+DESIGN_NOTES.md
+MOCKUP_VS_CURRENT.md
+extension/background/
+extension/*.jpg
+extension/*.jpeg
+# Keep extension/wallpapers/ — those are bundled defaults
+extension/*.png

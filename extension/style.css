@@ -1,0 +1,1345 @@
+/* ═══════════════════════════════════════════
+   Tab Out — style.css
+   ═══════════════════════════════════════════ */
+
+/* ── Local Quicksand font ────────────────── */
+@font-face {
+  font-family: 'Quicksand';
+  src: url('fonts/quicksand-v37-latin-regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Quicksand';
+  src: url('fonts/quicksand-v37-latin-500.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Quicksand';
+  src: url('fonts/quicksand-v37-latin-600.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Quicksand';
+  src: url('fonts/quicksand-v37-latin-700.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ── Tokens ──────────────────────────────── */
+:root {
+  --font: 'Quicksand', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --accent:       #3878d8;
+  --accent-glow:  rgba(56, 120, 216, 0.30);
+
+  /* Shared width: topbar-right buttons and quick-links row — keeps them visually aligned */
+  --right-col-w: 284px;
+
+  /* ── Radix Blue Scale ── */
+  --blue-1: #fbfdff; --blue-2: #f5f9fd; --blue-3: #eaf3fc;
+  --blue-4: #ddecfc; --blue-5: #cee2f9; --blue-6: #bbd5f1;
+  --blue-7: #a3c4e7; --blue-8: #86add5; --blue-9: #7fa5ce;
+  --blue-10: #749ac2; --blue-11: #50749a; --blue-12: #1a3855;
+
+  /* ── Radix Gray Scale ── */
+  --gray-1: #fcfcfd; --gray-2: #f9f9fb; --gray-3: #eff0f3;
+  --gray-4: #e7e8ec; --gray-5: #e0e1e6; --gray-6: #d8d9e0;
+  --gray-7: #cdced7; --gray-8: #b9bbc6; --gray-9: #8b8d98;
+  --gray-10: #80828d; --gray-11: #62636c; --gray-12: #1e1f24;
+
+  /* ── Glass · Light ──────────────────────────
+     All surfaces share the same base opacity so cards and top-bar elements
+     look identical. Hover / active states step up slightly for feedback. */
+  --bg-fallback:        #b8d4ea;
+  --glass-base:         rgba(255, 255, 255, 0.62);
+  --card-bg:            var(--glass-base);
+  --card-border:        rgba(255, 255, 255, 0.74);
+  --card-hover:         rgba(255, 255, 255, 0.70);
+  --surface:            rgba(255, 255, 255, 0.36);
+  --surface-border:     rgba(255, 255, 255, 0.55);
+  --pill-bg:            var(--glass-base);
+  --pill-border:        rgba(255, 255, 255, 0.74);
+  --btn-bg:             var(--glass-base);
+  --btn-hover:          rgba(255, 255, 255, 0.72);
+  --btn-active:         rgba(255, 255, 255, 0.90);
+  --search-bg:          var(--glass-base);
+  --track-bg:           rgba(255, 255, 255, 0.36);
+  --track-active:       rgba(255, 255, 255, 0.95);
+  --row-hover:          rgba(255, 255, 255, 0.44);
+  --settings-bg:        var(--glass-base);
+  --text-1:             var(--gray-12);
+  --text-2:             var(--gray-11);
+  --text-3:             var(--gray-9);
+}
+
+/* ── Glass · Dark ────────────────────────────
+   Single base value shared by cards and every top-bar surface. */
+body[data-mode="dark"] {
+  --bg-fallback:        #0d1117;
+  --glass-base:         rgba(20, 22, 30, 0.50);
+  --card-bg:            var(--glass-base);
+  --card-border:        rgba(255, 255, 255, 0.085);
+  --card-hover:         rgba(30, 33, 44, 0.70);
+  --surface:            rgba(255, 255, 255, 0.07);
+  --surface-border:     rgba(255, 255, 255, 0.11);
+  --pill-bg:            var(--glass-base);
+  --pill-border:        rgba(255, 255, 255, 0.10);
+  --btn-bg:             var(--glass-base);
+  --btn-hover:          rgba(30, 33, 44, 0.68);
+  --btn-active:         rgba(38, 42, 56, 0.82);
+  --search-bg:          var(--glass-base);
+  --track-bg:           var(--glass-base);
+  --track-active:       rgba(48, 52, 68, 0.82);
+  --row-hover:          rgba(255, 255, 255, 0.06);
+  --settings-bg:        rgba(20, 22, 30, 0.62);
+  --text-1:             #f0f0f2;
+  --text-2:             #8e8e99;
+  --text-3:             #4a4a5a;
+}
+
+/* ── Solid · Light ───────────────────────────
+   All surfaces same base white — fully opaque so no background bleeds through. */
+body[data-style="solid"] {
+  --solid-base:    rgba(255, 255, 255, 1);
+  --card-bg:       var(--solid-base);
+  --card-border:   rgba(0, 0, 0, 0.08);
+  --card-hover:    rgba(248, 248, 250, 1);
+  --pill-bg:       var(--solid-base);
+  --pill-border:   rgba(0, 0, 0, 0.08);
+  --btn-bg:        var(--solid-base);
+  --btn-hover:     rgba(242, 242, 246, 1);
+  --btn-active:    rgba(236, 236, 242, 1);
+  --search-bg:     var(--solid-base);
+  --track-bg:      rgba(230, 230, 234, 1);
+  --track-active:  rgba(255, 255, 255, 1);
+  --row-hover:     rgba(240, 240, 244, 1);
+  --settings-bg:   var(--solid-base);
+  --surface:       rgba(220, 220, 226, 0.6);
+  --surface-border:rgba(0, 0, 0, 0.08);
+}
+/* ── Solid · Dark ────────────────────────────
+   All surfaces share the same dark base — fully opaque. */
+body[data-mode="dark"][data-style="solid"] {
+  --solid-base:    rgba(22, 24, 34, 1);
+  --card-bg:       var(--solid-base);
+  --card-border:   rgba(255, 255, 255, 0.08);
+  --card-hover:    rgba(30, 33, 46, 1);
+  --pill-bg:       var(--solid-base);
+  --pill-border:   rgba(255, 255, 255, 0.10);
+  --btn-bg:        var(--solid-base);
+  --btn-hover:     rgba(32, 35, 50, 1);
+  --btn-active:    rgba(42, 46, 62, 1);
+  --search-bg:     var(--solid-base);
+  --track-bg:      rgba(32, 35, 50, 1);
+  --track-active:  rgba(50, 54, 72, 1);
+  --row-hover:     rgba(32, 35, 50, 1);
+  --settings-bg:   var(--solid-base);
+  --surface:       rgba(255, 255, 255, 0.07);
+  --surface-border:rgba(255, 255, 255, 0.09);
+}
+/* Remove all blurs in solid mode — every element that uses backdrop-filter */
+body[data-style="solid"] .pill-btn,
+body[data-style="solid"] .search-input,
+body[data-style="solid"] .quick-link,
+body[data-style="solid"] .meta-pill,
+body[data-style="solid"] .window-header-count,
+body[data-style="solid"] .group-card,
+body[data-style="solid"] .settings-popover,
+body[data-style="solid"] .cp-popover,
+body[data-style="solid"] .vtm,
+body[data-style="solid"] .ql-popover,
+body[data-style="solid"] .ql-input,
+body[data-style="solid"] .ql-confirm,
+body[data-style="solid"] .ai-mgmt-btn,
+body[data-style="solid"] .ql-delete {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+/* Solid mode: reveal the reserved border + subtle shadow for definition */
+body[data-style="solid"] .pill-btn,
+body[data-style="solid"] .quick-link,
+body[data-style="solid"] .meta-pill,
+body[data-style="solid"] .search-input {
+  border-color: var(--pill-border);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+
+/* ── Base ────────────────────────────────── */
+html, body {
+  min-height: 100vh;
+  font-family: var(--font);
+  font-size: 15px;
+  color: var(--text-1);
+  -webkit-font-smoothing: antialiased;
+  transition: color 0.25s;
+}
+
+/* ── Background ─────────────────────────── */
+.bg-layer {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background-color: #b8d4ea;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: background-color 0.4s, background-image 0.4s, filter 0.4s;
+}
+/* Image backgrounds stay crisp — cards already have backdrop-filter blur */
+.bg-layer.bg-blurred {
+  /* no extra blur; the per-card backdrop-filter is sufficient */
+}
+/* dark overlay */
+body[data-mode="dark"] .bg-layer::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 12, 0.52);
+}
+
+/* ── Page ────────────────────────────────── */
+.page {
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 48px 48px 52px;
+}
+
+/* ── Top bar ─────────────────────────────── */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 40px;
+}
+.topbar-left { flex: 1; }
+
+.greeting {
+  font-size: 38px;
+  font-weight: 700;
+  letter-spacing: -0.6px;
+  line-height: 1.0;
+  color: var(--text-1);
+  margin-bottom: 7px;
+}
+
+.topbar-sub {
+  font-size: 15.5px;
+  font-weight: 500;
+  color: var(--text-1);
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0;
+}
+.sub-sep { opacity: 0.35; padding: 0 10px; }
+#dateStr, #weatherStr {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+/* The inner separator inside #weatherStr sits inside a gap:7px flex container,
+   so reduce its padding so total space matches the outer separator (which has
+   no flex gap + padding:0 10px = 10px each side).
+   7px gap + 3px padding = 10px each side → visually equal. */
+#weatherStr .sub-sep { padding: 0 3px; }
+
+/* icon inside date/weather sub-row */
+.sub-icon {
+  display: inline-flex;
+  align-items: center;
+  opacity: 0.55;
+  flex-shrink: 0;
+}
+.weather-icon { opacity: 0.72; }
+
+.topbar-right {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+  width: var(--right-col-w);
+  justify-content: flex-end; /* buttons sit at the right edge */
+}
+
+/* pill buttons — transparent border reserves the 1px so solid mode swap-in never shifts layout */
+.pill-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 18px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  background: var(--btn-bg);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  color: var(--text-1);
+  font-family: var(--font);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, box-shadow 0.15s;
+  white-space: nowrap;
+}
+.pill-btn:hover         { background: var(--btn-hover); }
+.pill-btn:focus,
+.pill-btn:focus-visible { outline: none; }
+.pill-btn.active        { background: var(--btn-active); color: var(--text-1); box-shadow: none; }
+.ai-btn { color: var(--accent); position: relative; }
+
+/* ··· key-management badge — visible on hover, same pattern as ql-delete */
+.ai-mgmt-btn {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  border: none;
+  background: var(--card-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-2);
+  cursor: pointer;
+  opacity: 0;
+  transform: scale(0.7);
+  transition: opacity 0.15s, transform 0.15s, background 0.12s;
+  padding: 0;
+  z-index: 2;
+}
+.ai-btn:hover .ai-mgmt-btn {
+  opacity: 1;
+  transform: scale(1);
+}
+.ai-mgmt-btn:hover { background: var(--btn-hover); color: var(--text-1); }
+
+/* Key management mini-popover */
+.key-mgmt-pop {
+  flex-direction: column !important;
+  min-width: 148px;
+  padding: 5px !important;
+  gap: 2px !important;
+}
+.km-btn {
+  width: 100%;
+  height: 32px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text-1);
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  text-align: left;
+  padding: 0 10px;
+  transition: background 0.12s, color 0.12s;
+}
+.km-btn:hover { background: var(--row-hover); }
+.km-remove { color: var(--text-2); }
+.km-remove:hover { background: rgba(210,60,60,0.10); color: #d94545; }
+body[data-mode="dark"] .km-remove:hover { background: rgba(220,70,70,0.15); color: #e87070; }
+
+/* ── Search row ──────────────────────────── */
+.search-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 16px;
+}
+.search-wrap {
+  flex: 0 1 525px; /* matches left card width in 2-col layout: (1064−14)/2 ≈ 525px */
+  position: relative;
+}
+.search-icon {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-1);
+  opacity: 0.55;
+  pointer-events: none;
+  z-index: 1;
+}
+.search-input {
+  width: 100%;
+  height: 48px;
+  padding: 0 20px 0 46px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  background: var(--search-bg);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  color: var(--text-1);
+  font-family: var(--font);
+  font-size: 15px;
+  font-weight: 500;
+  outline: none;
+  transition: box-shadow 0.15s;
+}
+.search-input::placeholder { color: var(--text-2); }
+.search-input:focus { box-shadow: 0 0 0 0.5px var(--accent); }
+
+/* ── Quick links ─────────────────────────── */
+.quick-links {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+  width: var(--right-col-w);  /* matches .topbar-right exactly */
+  justify-content: flex-end;  /* items stack to the right; + placeholder sits at far left */
+}
+.quick-link {
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  background: var(--btn-bg);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: var(--text-1);
+  font-size: 13px;
+  font-weight: 700;
+  transition: background 0.15s, box-shadow 0.15s;
+  flex-shrink: 0;
+  position: relative; /* needed for delete button */
+  cursor: pointer;
+}
+.quick-link:hover {
+  background: var(--btn-hover);
+  box-shadow: 0 0 0 1px var(--gray-7);
+}
+.quick-link img { width: 20px; height: 20px; object-fit: contain; }
+
+/* Delete button — top-right, hidden until parent hovered */
+.ql-delete {
+  position: absolute;
+  top: -3px;
+  right: -3px;
+  width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  border: none;
+  background: var(--card-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-2);
+  cursor: pointer;
+  opacity: 0;
+  transform: scale(0.7);
+  transition: opacity 0.15s, transform 0.15s;
+  padding: 0;
+  z-index: 2;
+}
+.quick-link:hover .ql-delete {
+  opacity: 1;
+  transform: scale(1);
+}
+.ql-delete:hover {
+  background: rgba(210, 60, 60, 0.12);
+  color: #d94545;
+}
+
+/* Add-link placeholder — same circle as regular links, just dimmer */
+.ql-add {
+  opacity: 0.4;
+  color: var(--text-2);   /* text-2 instead of text-3: visible in dark mode */
+  font-family: var(--font);
+}
+.ql-add:hover {
+  opacity: 1;
+  box-shadow: none;        /* suppress the ring from .quick-link:hover in dark mode */
+}
+
+
+/* ── AI key popover ──────────────────────── */
+.ai-key-popover {
+  flex-direction: column !important;
+  min-width: 300px;
+  max-width: 340px;
+  padding: 14px !important;
+  gap: 0 !important;
+}
+.ai-key-inner { display: flex; flex-direction: column; gap: 10px; width: 100%; }
+.ai-key-heading {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-1);
+  color: var(--accent);
+}
+.ai-key-hint {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-2);
+  line-height: 1.55;
+}
+.ai-key-link {
+  color: var(--accent);
+  text-decoration: none;
+  margin-left: 4px;
+  white-space: nowrap;
+}
+.ai-key-link:hover { text-decoration: underline; }
+.ai-key-row { display: flex; gap: 6px; align-items: center; }
+.ai-key-input { flex: 1; }
+
+/* AI loading spinner */
+@keyframes ai-spin {
+  to { transform: rotate(360deg); }
+}
+.ai-spin { animation: ai-spin 0.8s linear infinite; }
+
+/* AI loading state in grid */
+.ai-loading { gap: 12px !important; }
+.ai-loading-icon {
+  font-size: 28px;
+  animation: ai-spin 2.5s linear infinite;
+  display: inline-block;
+}
+
+/* Add-link popover — uses same floating overlay token as settings panel */
+.ql-popover {
+  position: fixed;
+  z-index: 9999;
+  background: var(--settings-bg);    /* same token as settings panel — properly elevated in all 4 modes */
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border: none;
+  border-radius: 14px;
+  padding: 8px;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.14);
+  min-width: 240px;
+}
+.ql-input {
+  flex: 1;
+  height: 34px;
+  padding: 0 12px;
+  border-radius: 8px;
+  border: none;
+  background: var(--track-active);   /* "lit" level inside the track — always lighter */
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  color: var(--text-1);
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 500;
+  outline: none;
+  transition: box-shadow 0.15s;
+}
+.ql-input::placeholder { color: var(--text-3); }
+.ql-input:focus { box-shadow: 0 0 0 0.5px var(--accent); }
+.ql-confirm {
+  height: 34px;
+  padding: 0 14px;
+  border-radius: 8px;
+  border: none;
+  background: var(--track-active);   /* same level as input */
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  color: var(--text-1);
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s;
+  flex-shrink: 0;
+}
+.ql-confirm:hover { background: var(--btn-hover); }
+
+/* Bookmark saved state — accent fill */
+.tab-act.bookmark.saved {
+  color: var(--accent);
+}
+
+/* ── Saved-for-later card ────────────────── */
+.saved-card .saved-icon {
+  background: rgba(56, 120, 216, 0.12);
+  color: var(--accent);
+}
+body[data-mode="dark"] .saved-card .saved-icon {
+  background: rgba(56, 120, 216, 0.18);
+}
+/* Controls always visible (not hover-only) */
+.saved-card .saved-controls {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
+/* ── Meta row ────────────────────────────── */
+.meta-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+}
+.meta-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: var(--pill-bg);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border: 1px solid transparent;
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-2);
+}
+.meta-pill-outline {
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.meta-pill-outline:hover { background: var(--btn-hover); color: var(--text-1); }
+
+/* ── Groups grid (outer, holds window sections) ── */
+.groups-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+}
+
+/* ── Window section ──────────────────────── */
+.window-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.window-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 4px;
+}
+.window-header-title {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.2px;
+  color: var(--text-1);
+}
+.window-header-count {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 14px;
+  border-radius: 999px;
+  background: var(--btn-bg);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border: none;
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-2);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  white-space: nowrap;
+  user-select: none;
+}
+.window-header-count:hover {
+  background: rgba(220, 60, 60, 0.10);
+  color: #d94545;
+}
+body[data-mode="dark"] .window-header-count:hover {
+  background: rgba(220, 70, 70, 0.15);
+  color: #e87070;
+}
+/* Solid mode: no backdrop-filter, so raise the background opacity so the
+   hover tint is actually visible against the opaque surface. */
+body[data-style="solid"] .window-header-count:hover {
+  background: rgba(220, 60, 60, 0.14);
+}
+body[data-mode="dark"][data-style="solid"] .window-header-count:hover {
+  background: rgba(220, 70, 70, 0.20);
+}
+/* close icon shown on hover */
+.window-header-count .wc-label-default { display: inline; }
+.window-header-count .wc-label-hover   { display: none;   }
+.window-header-count:hover .wc-label-default { display: none;   }
+.window-header-count:hover .wc-label-hover   { display: inline; }
+
+/* ── Domain grid (inner 2-col grid of cards) ── */
+.domain-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  align-items: start;  /* each card hugs its own content height */
+}
+body[data-layout="one-col"] .domain-grid {
+  grid-template-columns: 1fr;
+}
+@media (max-width: 720px) {
+  .domain-grid { grid-template-columns: 1fr; }
+  .page { padding: 28px 20px 60px; }
+  .search-row { flex-direction: column; }
+}
+
+/* ── Group card ──────────────────────────── */
+.group-card {
+  border-radius: 22px;
+  border: 0.5px solid var(--card-border);
+  background: var(--card-bg);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  overflow: hidden;
+  transition: background 0.2s;
+}
+body[data-style="solid"] .group-card {
+  background: var(--card-bg);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+body[data-mode="dark"][data-style="solid"] .group-card {
+  background: var(--card-bg);
+}
+
+/* Group header */
+.group-header {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 15px 15px 11px;
+}
+.group-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 17px;
+  line-height: 1;
+}
+.group-titles { flex: 1; min-width: 0; }
+.group-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-1);
+  line-height: 1.3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.group-meta {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-3);
+  margin-top: 1px;
+}
+
+/* Group hover controls */
+.group-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s;
+}
+.group-card:hover .group-controls {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Per-card view toggle */
+.vtm {
+  display: flex;
+  background: var(--track-bg);
+  border-radius: 999px;
+  padding: 2px;
+  gap: 1px;
+}
+.vtm-btn {
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--text-2);
+  transition: background 0.12s, color 0.12s;
+}
+.vtm-btn.active {
+  background: var(--track-active);
+  color: var(--text-1);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.12);
+}
+
+/* Close-all button — secondary button inside a card, matches the vtm track gray */
+.close-all-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 30px;
+  padding: 0 10px;
+  border-radius: 999px;
+  border: none;
+  background: var(--track-bg);
+  color: var(--text-2);
+  font-family: var(--font);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s;
+}
+.close-all-btn:hover { background: rgba(220, 60, 60, 0.12); color: #d94545; }
+
+/* ── Group body ──────────────────────────── */
+.group-body { padding: 0 7px 10px; }
+
+/* ── Tab row (list view) ─────────────────── */
+.tab-row {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 7px 9px;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: background 0.12s;
+  position: relative;
+  overflow: hidden;
+}
+.tab-row:hover { background: var(--row-hover); }
+
+.tab-fav {
+  width: 18px; height: 18px;
+  border-radius: 4px;
+  flex-shrink: 0;
+  object-fit: contain;
+}
+.tab-fav-ph {
+  width: 18px; height: 18px;
+  border-radius: 4px;
+  flex-shrink: 0;
+  background: var(--surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-2);
+}
+.tab-row-title {
+  flex: 1;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-1);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.tab-row-actions {
+  display: flex;
+  gap: 2px;
+  opacity: 0;
+  flex-shrink: 0;
+  transition: opacity 0.12s;
+}
+.tab-row:hover .tab-row-actions { opacity: 1; }
+.tab-act {
+  width: 24px; height: 24px;
+  border-radius: 6px;
+  border: none;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--text-3);
+  transition: background 0.1s, color 0.1s;
+}
+.tab-act:hover { background: var(--surface); color: var(--text-1); }
+.tab-act.close:hover { background: rgba(210,60,60,0.12); color: #c03030; }
+
+/* ── Grid view ───────────────────────────── */
+.group-body.view-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 7px;
+  padding: 0 8px 12px;
+}
+/* More columns when the card spans full page width, so cells stay thumbnail-sized */
+body[data-layout="one-col"] .group-body.view-grid {
+  grid-template-columns: repeat(4, 1fr);
+}
+.group-body.view-grid .tab-row { display: none; }
+
+.tab-grid-cell {
+  border-radius: 11px;
+  border: 0.5px solid var(--card-border);
+  overflow: hidden;
+  cursor: pointer;
+  position: relative;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.tab-grid-cell:hover {
+  border-color: var(--gray-7);
+  box-shadow: 0 0 0 1px var(--gray-7);
+}
+/* Subtle gray overlay so image & text cards feel the same on hover */
+.tab-grid-cell .tgc-img::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: transparent;
+  transition: background 0.15s;
+  pointer-events: none;
+  border-radius: 0;
+}
+.tab-grid-cell:hover .tgc-img::after {
+  background: rgba(0, 0, 0, 0.07);
+}
+body[data-mode="dark"] .tab-grid-cell:hover .tgc-img::after {
+  background: rgba(255, 255, 255, 0.07);
+}
+.tgc-img {
+  /* Fixed ratio instead of fixed px — stays consistent at any column width */
+  aspect-ratio: 16 / 9;
+  background: var(--surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+}
+/* Real page screenshot — fills the 16:9 cell edge-to-edge */
+.tgc-screenshot {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+/* Large favicon used as placeholder until screenshot is captured */
+.tgc-img .tgc-fav-large {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  opacity: 0.50;
+  border-radius: 8px;
+}
+.tgc-initial {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-3);
+  opacity: 0.50;
+}
+.tgc-foot {
+  padding: 5px 7px;
+  background: var(--card-bg);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.tab-fav-sm { width: 13px; height: 13px; border-radius: 3px; flex-shrink: 0; object-fit: contain; }
+.tab-fav-sm-ph {
+  width: 13px; height: 13px; border-radius: 3px; flex-shrink: 0;
+  background: var(--surface); font-size: 8px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center; color: var(--text-3);
+}
+.tgc-title {
+  font-size: 11px; font-weight: 500; color: var(--text-1);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+/* ── Settings popover ────────────────────── */
+.settings-popover {
+  position: fixed;
+  top: 80px;
+  right: 48px;
+  background: var(--settings-bg);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border: 0.5px solid var(--card-border);
+  border-radius: 22px;
+  padding: 18px;
+  display: none;
+  flex-direction: column;
+  gap: 15px;
+  z-index: 300;
+  min-width: 260px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.10);
+}
+.settings-popover.open { display: flex; }
+
+/* ── Custom color picker ─────────────────── */
+.cp-popover {
+  position: fixed;
+  background: var(--settings-bg);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border: 0.5px solid var(--card-border);
+  border-radius: 20px;
+  padding: 14px;
+  display: none;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 400;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.12);
+  width: 208px;
+  overflow: hidden;
+}
+.cp-popover.open { display: flex; }
+body[data-style="solid"] .cp-popover { backdrop-filter: none; -webkit-backdrop-filter: none; }
+
+.cp-top {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: 100%;
+  overflow: hidden;
+}
+.cp-preview {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  border: 0.5px solid var(--card-border);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.10);
+}
+.cp-hex {
+  flex: 1;
+  min-width: 0;
+  height: 32px;
+  border-radius: 10px;
+  border: 0.5px solid var(--card-border);
+  background: var(--surface);
+  color: var(--text-1);
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  padding: 0 10px;
+  outline: none;
+  text-transform: uppercase;
+  transition: box-shadow 0.15s;
+}
+.cp-hex:focus { box-shadow: 0 0 0 0.5px var(--accent); }
+.cp-sv {
+  display: block;
+  width: 180px;
+  height: 180px; /* square */
+  border-radius: 10px;
+  cursor: crosshair;
+  flex-shrink: 0;
+}
+.cp-add-btn {
+  width: 100%;
+  height: 34px;
+  border-radius: 10px;
+  border: 0.5px solid var(--blue-6);
+  background: var(--blue-3);
+  color: var(--blue-11);
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+  flex-shrink: 0;
+}
+.cp-add-btn:hover { background: var(--blue-4); }
+body[data-mode="dark"] .cp-add-btn {
+  background: rgba(56, 120, 216, 0.18);
+  border-color: rgba(100, 160, 255, 0.30);
+  color: rgba(140, 190, 255, 0.90);
+}
+body[data-mode="dark"] .cp-add-btn:hover {
+  background: rgba(56, 120, 216, 0.28);
+}
+.cp-hue {
+  display: block;
+  width: 180px; height: 16px;
+  border-radius: 8px;
+  cursor: ew-resize;
+  flex-shrink: 0;
+}
+
+.settings-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+/* Background row: label aligns with center of first (color) row */
+.settings-row-bg {
+  align-items: flex-start;
+}
+.settings-row-bg .settings-label {
+  padding-top: 9px; /* (34px swatch - ~16px label) / 2 */
+}
+.bg-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: flex-end;
+}
+
+.settings-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-2);
+  flex-shrink: 0;
+}
+
+/* Toggle group (settings) */
+.toggle-group {
+  display: flex;
+  background: var(--track-bg);
+  border-radius: 999px;
+  padding: 3px;
+  gap: 1px;
+}
+.toggle-btn {
+  width: 34px;
+  height: 34px;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s, box-shadow 0.12s;
+}
+.toggle-btn.active {
+  background: var(--track-active);
+  color: var(--text-1);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.07);
+}
+.toggle-btn:not(.active):hover { color: var(--text-1); }
+
+/* ── Background color swatches ───────────── */
+.bg-colors { display: grid; grid-template-columns: repeat(3, 34px); gap: 5px; }
+.bg-swatch {
+  position: relative;
+  width: 34px; height: 34px;
+  border-radius: 999px;
+  border: 2px solid transparent;
+  cursor: pointer;
+  flex-shrink: 0;
+  outline: none;
+  transition: filter 0.15s, border-color 0.15s;
+}
+.bg-swatch:not(.bg-swatch-add):hover { filter: brightness(0.88); }
+.bg-swatch.selected { border: 0.8px solid var(--blue-5); box-shadow: none; }
+body[data-mode="dark"] .bg-swatch.selected { border-color: rgba(140, 190, 255, 0.50); }
+
+/* Delete × on swatch hover */
+.swatch-del {
+  position: absolute;
+  top: -4px; right: -4px;
+  width: 15px; height: 15px;
+  border-radius: 50%;
+  background: rgba(20, 20, 20, 0.72);
+  color: #fff;
+  border: none;
+  font-size: 11px;
+  cursor: pointer;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  padding: 0;
+  z-index: 2;
+  backdrop-filter: none;
+}
+.bg-swatch:hover .swatch-del { display: flex; }
+
+/* Add color swatch — no border, soft glass fill */
+.bg-swatch-add {
+  background: var(--track-bg) !important;
+  border: none !important;
+  background-image: none !important;
+  color: var(--gray-8);
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.15s, color 0.15s;
+}
+.bg-swatch-add:hover {
+  background: var(--btn-hover) !important;
+  background-image: none !important;
+  color: var(--text-2);
+}
+
+/* ── Background image slots ──────────────── */
+.bg-images { display: grid; grid-template-columns: repeat(3, 34px); gap: 5px; }
+.bg-thumb {
+  position: relative;
+  width: 34px; height: 34px;
+  border-radius: 10px;
+  overflow: visible;
+  cursor: pointer;
+  border: 0.8px solid transparent;
+  flex-shrink: 0;
+  transition: border-color 0.15s, filter 0.15s;
+}
+.bg-thumb:not(.bg-thumb-add):hover { filter: brightness(0.88); }
+.bg-thumb.selected { border-color: var(--blue-5); }
+body[data-mode="dark"] .bg-thumb.selected { border-color: rgba(140, 190, 255, 0.50); }
+
+/* inner div clips the image but lets delete button overflow */
+.bg-thumb-inner {
+  width: 100%; height: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  background-color: var(--surface);
+}
+
+/* Delete × on thumb hover */
+.thumb-del {
+  position: absolute;
+  top: -4px; right: -4px;
+  width: 15px; height: 15px;
+  border-radius: 50%;
+  background: rgba(20, 20, 20, 0.72);
+  color: #fff;
+  border: none;
+  font-size: 11px;
+  cursor: pointer;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  padding: 0;
+  z-index: 2;
+  backdrop-filter: none;
+}
+.bg-thumb:hover .thumb-del { display: flex; }
+
+/* Add image slot */
+/* Add image slot — no border, soft glass fill */
+.bg-thumb-add {
+  background: var(--track-bg) !important;
+  border: none !important;
+  background-image: none !important;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--gray-8);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.bg-thumb-add:hover {
+  background: var(--btn-hover) !important;
+  background-image: none !important;
+  color: var(--text-2);
+}
+
+/* ── Dark background adaptive text ──────── */
+/* When user picks a dark solid color bg, flip exposed text to light */
+body[data-bg-dark="true"]:not([data-mode="dark"]) .greeting,
+body[data-bg-dark="true"]:not([data-mode="dark"]) .topbar-sub,
+body[data-bg-dark="true"]:not([data-mode="dark"]) .window-header-title,
+body[data-bg-dark="true"]:not([data-mode="dark"]) .footer {
+  color: rgba(255, 255, 255, 0.92);
+}
+/* Dark background image — glass mode only (solid mode keeps its opaque white) */
+/* Dark background image — glass mode only (solid mode keeps its opaque white) */
+body[data-bg-dark="true"]:not([data-mode="dark"]):not([data-style="solid"]) .window-header-count {
+  background: rgba(255, 255, 255, 0.28);
+  color: rgba(255, 255, 255, 0.9);
+}
+body[data-bg-dark="true"]:not([data-mode="dark"]):not([data-style="solid"]) .pill-btn,
+body[data-bg-dark="true"]:not([data-mode="dark"]):not([data-style="solid"]) .search-input,
+body[data-bg-dark="true"]:not([data-mode="dark"]):not([data-style="solid"]) .quick-link,
+body[data-bg-dark="true"]:not([data-mode="dark"]):not([data-style="solid"]) .meta-pill {
+  background: rgba(255, 255, 255, 0.28);
+  border-color: rgba(255, 255, 255, 0.38);
+  color: rgba(255, 255, 255, 0.92);
+}
+body[data-bg-dark="true"]:not([data-mode="dark"]):not([data-style="solid"]) .search-input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+body[data-bg-dark="true"]:not([data-mode="dark"]):not([data-style="solid"]) .ai-btn {
+  color: rgba(140, 190, 255, 0.95);
+}
+/* Cards and settings panel tone down to reduce gap with top elements */
+body[data-bg-dark="true"]:not([data-mode="dark"]):not([data-style="solid"]) .group-card {
+  background: rgba(255, 255, 255, 0.42);
+  border-color: rgba(255, 255, 255, 0.55);
+}
+body[data-bg-dark="true"]:not([data-mode="dark"]):not([data-style="solid"]) .settings-popover {
+  background: rgba(255, 255, 255, 0.72);
+}
+
+/* ── Empty / error state ─────────────────── */
+.empty-state {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 80px 24px;
+  color: var(--text-2);
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+/* ── Footer ──────────────────────────────── */
+.footer {
+  text-align: center;
+  margin-top: 48px;
+}
+.footer-credits {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-2);
+  opacity: 0.95;
+  margin-bottom: 5px;
+}
+.footer-meta {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-3);
+  opacity: 0.65;
+}
+.footer a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.footer a:hover { color: var(--text-1); }
+.footer-heart {
+  display: inline-block;
+  vertical-align: -2px;
+}
+
+/* ── Confetti particles ───────────────────── */
+@keyframes confetti-fly {
+  0%   { transform: translate(0, 0) scale(1); opacity: 1; }
+  100% { transform: translate(var(--dx), var(--dy)) scale(0); opacity: 0; }
+}
+.cp {
+  position: fixed;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  animation: confetti-fly 0.7s ease-out forwards;
+}

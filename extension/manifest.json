@@ -1,0 +1,42 @@
+{
+  "manifest_version": 3,
+  "name": "Tab Out",
+  "version": "0.1.0",
+  "description": "All your open tabs, one clean page.",
+  "chrome_url_overrides": {
+    "newtab": "newtab.html"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://*/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["wallpapers/*.png", "wallpapers/*.jpg", "wallpapers/*.webp"],
+      "matches": ["<all_urls>"]
+    }
+  ],
+  "permissions": [
+    "tabs",
+    "windows",
+    "storage",
+    "unlimitedStorage"
+  ],
+  "host_permissions": [
+    "<all_urls>",
+    "https://api.anthropic.com/*",
+    "https://api.openai.com/*",
+    "https://generativelanguage.googleapis.com/*",
+    "https://api.open-meteo.com/*",
+    "https://api.ip.sb/*",
+    "https://ipwho.is/*",
+    "https://ipapi.co/*",
+    "https://ipinfo.io/*"
+  ]
+}

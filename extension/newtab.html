@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tab Out</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-mode="light" data-style="glass" data-layout="two-col" data-view="list">
+
+  <!-- Background layer -->
+  <div class="bg-layer" id="bgLayer"></div>
+
+  <div class="page">
+
+    <!-- ── Top bar ── -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <h1 class="greeting" id="greeting">Good morning</h1>
+        <div class="topbar-sub">
+          <span id="dateStr"></span>
+          <span class="sub-sep" id="weatherSep"> · </span>
+          <span id="weatherStr"></span>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <button class="pill-btn ai-btn" id="aiBtn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
+            <path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path d="M17 19h4"/>
+          </svg>
+          Organize with AI
+        </button>
+        <button class="pill-btn settings-btn" id="settingsBtn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+          </svg>
+          Settings
+        </button>
+      </div>
+    </header>
+
+    <!-- ── Search + Quick links ── -->
+    <div class="search-row">
+      <div class="search-wrap">
+        <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+        </svg>
+        <input class="search-input" id="searchInput" type="text" placeholder="Search Google…" autocomplete="off">
+      </div>
+      <div class="quick-links" id="quickLinks"></div>
+    </div>
+
+    <!-- ── Meta row ── -->
+    <div class="meta-row">
+      <span class="meta-pill" id="tabCountPill">— tabs open</span>
+      <span class="meta-pill" id="groupCountPill">— windows</span>
+      <button class="meta-pill meta-pill-outline" id="saveBtn">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+        </svg>
+        Save for later
+      </button>
+    </div>
+
+    <!-- ── Groups grid ── -->
+    <div class="groups-grid" id="groupsGrid"></div>
+
+    <!-- ── Footer ── -->
+    <footer class="footer">
+      <div class="footer-credits">
+        made with
+        <svg class="footer-heart" width="13" height="13" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path fill="currentColor" d="M2 9.137C2 14 6.02 16.591 8.962 18.911C10 19.729 11 20.5 12 20.5s2-.77 3.038-1.59C17.981 16.592 22 14 22 9.138S16.5.825 12 5.501C7.5.825 2 4.274 2 9.137"/>
+        </svg>
+        by
+        <a href="https://x.com/zarazhangrui" target="_blank">Zara Zhang</a>
+        &nbsp;·&nbsp;
+        <a href="https://anthropic.com/product/claude-code" target="_blank">AI</a>
+        &nbsp;·&nbsp;
+        <a href="https://x.com/yuxuan_o_o" target="_blank">Yuxuan Hou</a>
+      </div>
+      <div class="footer-meta">
+        <a href="https://github.com/yuxuan-o-o/tab-out" target="_blank" id="openSourceLink">open source ↗</a>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- ── Settings popover (outside .page so position:fixed isn't broken by ancestor transforms) ── -->
+  <div class="settings-popover" id="settingsPopover">
+
+    <div class="settings-row">
+      <span class="settings-label">Layout</span>
+      <div class="toggle-group" data-setting="layout">
+        <button class="toggle-btn active" data-value="two-col" title="Two columns">
+          <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+            <rect x="1" y="1" width="8" height="18" rx="2"/><rect x="11" y="1" width="8" height="18" rx="2"/>
+          </svg>
+        </button>
+        <button class="toggle-btn" data-value="one-col" title="One column">
+          <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+            <rect x="1" y="1" width="18" height="18" rx="2"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="settings-row">
+      <span class="settings-label">View</span>
+      <div class="toggle-group" data-setting="view">
+        <button class="toggle-btn" data-value="grid" title="Image view">
+          <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+            <rect x="1" y="1" width="8" height="8" rx="1.5"/><rect x="11" y="1" width="8" height="8" rx="1.5"/>
+            <rect x="1" y="11" width="8" height="8" rx="1.5"/><rect x="11" y="11" width="8" height="8" rx="1.5"/>
+          </svg>
+        </button>
+        <button class="toggle-btn active" data-value="list" title="List view">
+          <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+            <line x1="7" y1="5" x2="19" y2="5"/><line x1="7" y1="10" x2="19" y2="10"/><line x1="7" y1="15" x2="19" y2="15"/>
+            <circle cx="3" cy="5" r="1.2" fill="currentColor" stroke="none"/><circle cx="3" cy="10" r="1.2" fill="currentColor" stroke="none"/><circle cx="3" cy="15" r="1.2" fill="currentColor" stroke="none"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="settings-row">
+      <span class="settings-label">Style</span>
+      <div class="toggle-group" data-setting="style">
+        <button class="toggle-btn active" data-value="glass" title="Glass">
+          <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+            <path d="M10 2l4.5 4.5a6.36 6.36 0 1 1-9 0L10 2z"/>
+          </svg>
+        </button>
+        <button class="toggle-btn" data-value="solid" title="Solid">
+          <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8">
+            <rect x="2" y="2" width="16" height="16" rx="3" fill="currentColor" opacity="0.25"/>
+            <rect x="2" y="2" width="16" height="16" rx="3"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="settings-row">
+      <span class="settings-label">Mode</span>
+      <div class="toggle-group" data-setting="mode">
+        <button class="toggle-btn active" data-value="light" title="Light">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <circle cx="12" cy="12" r="5"/>
+            <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+            <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+          </svg>
+        </button>
+        <button class="toggle-btn" data-value="dark" title="Dark">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </button>
+        <button class="toggle-btn" data-value="auto" title="Auto (time-based)">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="settings-row settings-row-bg">
+      <span class="settings-label">Background</span>
+      <div class="bg-controls">
+        <div class="bg-colors" id="bgColors"></div>
+        <div class="bg-images" id="bgPicker"></div>
+      </div>
+    </div>
+
+  </div>
+
+
+  <!-- ── Custom Color Picker (slides out to the left of settings panel) ── -->
+  <div class="cp-popover" id="cpPopover">
+    <div class="cp-top">
+      <div class="cp-preview" id="cpPreview"></div>
+      <input class="cp-hex" id="cpHex" type="text" maxlength="7" spellcheck="false" placeholder="#B8D4EA">
+    </div>
+    <canvas class="cp-sv" id="cpSv" width="180" height="180"></canvas>
+    <canvas class="cp-hue" id="cpHue" width="180" height="16"></canvas>
+    <button class="cp-add-btn" id="cpAddBtn">Add color</button>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
