@@ -541,13 +541,142 @@ function openQlPopover(anchor) {
   }, 0);
 }
 
-// ── Search ────────────────────────────────
+// ── Tab Search ────────────────────────────
+let _tsdIdx = -1; // keyboard-selected index in dropdown
+
 function setupSearch() {
-  document.getElementById('searchInput').addEventListener('keydown', e => {
-    if (e.key !== 'Enter') return;
-    const q = e.target.value.trim();
-    if (q) { window.open(`https://www.google.com/search?q=${encodeURIComponent(q)}`, '_blank'); e.target.value = ''; }
+  const input = document.getElementById('searchInput');
+  const drop  = document.getElementById('tabSearchDrop');
+
+  // Show/hide + render on typing
+  input.addEventListener('input', () => {
+    const q = input.value.trim();
+    if (!q) { closeTsd(); return; }
+    renderTsd(q);
   });
+
+  // Keyboard nav
+  input.addEventListener('keydown', e => {
+    const items = drop.querySelectorAll('.tsd-item');
+
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      _tsdIdx = Math.min(_tsdIdx + 1, items.length - 1);
+      highlightTsd(items);
+      return;
+    }
+    if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      _tsdIdx = Math.max(_tsdIdx - 1, -1);
+      highlightTsd(items);
+      return;
+    }
+    if (e.key === 'Escape') {
+      closeTsd(); input.blur(); return;
+    }
+    if (e.key === 'Enter') {
+      // If a tab result is highlighted → jump to it
+      if (_tsdIdx >= 0 && items[_tsdIdx]) {
+        items[_tsdIdx].click(); return;
+      }
+      // Otherwise → Google search
+      const q = input.value.trim();
+      if (q) {
+        window.open(`https://www.google.com/search?q=${encodeURIComponent(q)}`, '_blank');
+        input.value = '';
+        closeTsd();
+      }
+    }
+  });
+
+  // Close when clicking outside
+  document.addEventListener('click', e => {
+    if (!e.target.closest('.search-wrap')) closeTsd();
+  });
+}
+
+function renderTsd(q) {
+  const drop = document.getElementById('tabSearchDrop');
+  const lower = q.toLowerCase();
+
+  // Collect all tabs from all windows
+  const allTabs = cachedWindows.flatMap(w =>
+    (w.tabs || []).map(t => ({ ...t, windowId: w.id }))
+  );
+
+  const matches = allTabs.filter(t =>
+    (t.title  || '').toLowerCase().includes(lower) ||
+    (t.url    || '').toLowerCase().includes(lower)
+  ).slice(0, 6);
+
+  if (!matches.length) { closeTsd(); return; }
+
+  _tsdIdx = -1;
+  drop.innerHTML = '';
+
+  const multiWindow = cachedWindows.filter(w => (w.tabs||[]).length).length > 1;
+
+  matches.forEach(tab => {
+    const item = document.createElement('div');
+    item.className = 'tsd-item';
+
+    // Favicon
+    const fav = document.createElement('img');
+    fav.className = 'tsd-fav';
+    fav.width = fav.height = 16;
+    fav.src = tab.favIconUrl || `https://www.google.com/s2/favicons?domain=${new URL(tab.url).hostname}&sz=32`;
+    fav.onerror = () => { fav.style.display = 'none'; };
+
+    // Text block
+    const text = document.createElement('div');
+    text.className = 'tsd-text';
+
+    const title = document.createElement('span');
+    title.className = 'tsd-title';
+    title.textContent = tab.title || tab.url;
+
+    const url = document.createElement('span');
+    url.className = 'tsd-url';
+    try { url.textContent = new URL(tab.url).hostname; } catch { url.textContent = tab.url; }
+
+    text.appendChild(title);
+    text.appendChild(url);
+
+    // Window badge (only if multiple windows)
+    if (multiWindow) {
+      const badge = document.createElement('span');
+      badge.className = 'tsd-badge';
+      const winIdx = cachedWindows.findIndex(w => w.id === tab.windowId);
+      badge.textContent = `W${winIdx + 1}`;
+      item.appendChild(fav);
+      item.appendChild(text);
+      item.appendChild(badge);
+    } else {
+      item.appendChild(fav);
+      item.appendChild(text);
+    }
+
+    item.addEventListener('click', () => {
+      chrome.windows.update(tab.windowId, { focused: true });
+      chrome.tabs.update(tab.id, { active: true });
+      closeTsd();
+      document.getElementById('searchInput').value = '';
+    });
+
+    drop.appendChild(item);
+  });
+
+  drop.classList.add('open');
+}
+
+function highlightTsd(items) {
+  items.forEach((el, i) => el.classList.toggle('active', i === _tsdIdx));
+}
+
+function closeTsd() {
+  const drop = document.getElementById('tabSearchDrop');
+  if (drop) { drop.classList.remove('open'); drop.innerHTML = ''; }
+  _tsdIdx = -1;
 }
 
 // ── Load tabs (entry point) ───────────────
