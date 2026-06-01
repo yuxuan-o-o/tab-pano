@@ -10,7 +10,9 @@ Remixed from [Zara Zhang](https://x.com/zarazhangrui)'s [original Tab Out](https
 
 ## Preview
 
+<div align="center">
 <video src="https://github.com/user-attachments/assets/16d00221-f83c-44ad-b1b2-1fd1bf5f7422" controls autoplay loop muted></video>
+</div>
 
 ---
 
