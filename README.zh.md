@@ -8,6 +8,12 @@
 
 ---
 
+## 预览
+
+<video src="https://github.com/user-attachments/assets/16d00221-f83c-44ad-b1b2-1fd1bf5f7422" controls autoplay loop muted></video>
+
+---
+
 ## 新增功能
 
 ### 1. 多窗口支持
