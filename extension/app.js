@@ -902,7 +902,7 @@ function groupByDomain(tabs) {
 // aiEmoji: if provided, use it as the icon instead of favicon (AI-organized groups)
 function buildDomainCard(domain, tabs, bgColor, aiEmoji = null) {
   const card = document.createElement('div');
-  card.className = 'group-card';
+  card.className = 'group-card' + (aiEmoji ? ' ai-card' : '');
   card._tabs = tabs;
 
   const isOther = domain === 'other';
@@ -947,6 +947,13 @@ function buildDomainCard(domain, tabs, bgColor, aiEmoji = null) {
             </svg>
           </button>
         </div>
+        ${aiEmoji ? `
+        <button class="open-window-btn" title="Open group in new window">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/>
+          </svg>
+          New window
+        </button>` : ''}
         <button class="close-all-btn">
           <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
             <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
@@ -970,6 +977,23 @@ function buildDomainCard(domain, tabs, bgColor, aiEmoji = null) {
       else renderList(body, tabs);
     });
   });
+
+  // Open AI group in new window (only present on ai-cards)
+  const openWinBtn = card.querySelector('.open-window-btn');
+  if (openWinBtn) {
+    openWinBtn.addEventListener('click', async e => {
+      e.stopPropagation();
+      const tabIds = tabs.map(t => t.id).filter(Boolean);
+      if (!tabIds.length) return;
+      // Create new window with first tab, then move the rest
+      const newWin = await chrome.windows.create({ tabId: tabIds[0] });
+      for (const id of tabIds.slice(1)) {
+        await chrome.tabs.move(id, { windowId: newWin.id, index: -1 }).catch(() => {});
+      }
+      // Refresh view
+      loadTabs();
+    });
+  }
 
   // Close all
   card.querySelector('.close-all-btn').addEventListener('click', async e => {

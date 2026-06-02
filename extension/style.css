@@ -892,6 +892,31 @@ body[data-mode="dark"][data-style="solid"] .group-card {
 }
 .close-all-btn:hover { background: rgba(220, 60, 60, 0.12); color: #d94545; }
 
+/* ── Open-in-new-window btn (AI cards only) ── */
+.open-window-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 30px;
+  padding: 0 10px;
+  border-radius: 999px;
+  border: none;
+  background: var(--track-bg);
+  color: var(--text-2);
+  font-family: var(--font);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s, opacity 0.15s;
+  opacity: 0;
+  pointer-events: none;
+}
+.ai-card:hover .open-window-btn {
+  opacity: 1;
+  pointer-events: auto;
+}
+.open-window-btn:hover { background: var(--btn-hover); color: var(--text-1); }
+
 /* ── Group body ──────────────────────────── */
 .group-body { padding: 0 7px 10px; }
 
