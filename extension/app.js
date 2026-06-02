@@ -237,6 +237,7 @@ async function init() {
   fetchWeather();
   renderQuickLinks();
   setupSearch();
+  setupDupBtn();
   setupSettings();
   setupColorPicker();
   renderBgColors();
@@ -541,12 +542,55 @@ function openQlPopover(anchor) {
   }, 0);
 }
 
+// ── Duplicate tab detection ───────────────
+function getDuplicates() {
+  const allTabs = cachedWindows.flatMap(w => w.tabs || []).filter(t => !isExtensionTab(t));
+  const seen = new Map(); // url → first tab
+  const extras = [];
+  for (const t of allTabs) {
+    const key = t.url;
+    if (seen.has(key)) { extras.push(t); } else { seen.set(key, t); }
+  }
+  return extras;
+}
+
+function updateDupBtn() {
+  const extras = getDuplicates();
+  const btn    = document.getElementById('dupBtn');
+  const label  = document.getElementById('dupLabel');
+  if (!btn) return;
+  if (extras.length === 0) { btn.style.display = 'none'; return; }
+  btn.style.display = '';
+  label.textContent = `${extras.length} duplicate${extras.length > 1 ? 's' : ''}`;
+}
+
+function setupDupBtn() {
+  document.getElementById('dupBtn').addEventListener('click', async () => {
+    const extras = getDuplicates();
+    if (!extras.length) return;
+    await Promise.all(extras.map(t => chrome.tabs.remove(t.id).catch(() => {})));
+    cachedWindows = await chrome.windows.getAll({ populate: true });
+    renderTabs();
+  });
+}
+
 // ── Tab Search ────────────────────────────
 let _tsdIdx = -1; // keyboard-selected index in dropdown
 
 function setupSearch() {
   const input = document.getElementById('searchInput');
   const drop  = document.getElementById('tabSearchDrop');
+
+  // ── Global keyboard shortcut: / or Cmd+K → focus search ──
+  document.addEventListener('keydown', e => {
+    if (e.target === input) return; // already focused
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+    if (e.key === '/' || ((e.metaKey || e.ctrlKey) && e.key === 'k')) {
+      e.preventDefault();
+      input.focus();
+      input.select();
+    }
+  });
 
   // Show/hide + render on typing
   input.addEventListener('input', () => {
@@ -695,6 +739,7 @@ async function loadTabs() {
     .filter(t => !isExtensionTab(t));
 
   document.getElementById('tabCountPill').textContent   = `${allTabs.length} tab${allTabs.length !== 1 ? 's' : ''} open`;
+  updateDupBtn();
   const groupPill = document.getElementById('groupCountPill');
   if (cachedWindows.length <= 1) {
     groupPill.style.display = 'none'; // single window — redundant info

@@ -689,6 +689,11 @@ body[data-mode="dark"] .saved-card .saved-icon {
 }
 .meta-pill-outline:hover { background: var(--btn-hover); color: var(--text-1); }
 
+.meta-pill-warn { color: var(--warn-color, #c87941); }
+.meta-pill-warn:hover { background: rgba(200, 121, 65, 0.10) !important; }
+body[data-mode="dark"] .meta-pill-warn { color: var(--warn-color-dark, #e8a06a); }
+.dup-close-hint { opacity: 0.6; }
+
 /* ── Groups grid (outer, holds window sections) ── */
 .groups-grid {
   display: flex;
