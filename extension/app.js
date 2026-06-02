@@ -985,13 +985,22 @@ function buildDomainCard(domain, tabs, bgColor, aiEmoji = null) {
       e.stopPropagation();
       const tabIds = tabs.map(t => t.id).filter(Boolean);
       if (!tabIds.length) return;
-      // Create new window with first tab, then move the rest
+
+      // Confetti burst in a different palette — celebratory, not farewell
+      confettiPalette(openWinBtn, ['#a78bfa','#60a5fa','#34d399','#fbbf24','#f472b6','#fff','#c4b5fd']);
+
+      // Move tabs to new window
       const newWin = await chrome.windows.create({ tabId: tabIds[0] });
       for (const id of tabIds.slice(1)) {
         await chrome.tabs.move(id, { windowId: newWin.id, index: -1 }).catch(() => {});
       }
-      // Refresh view
-      loadTabs();
+
+      // Focus new window, then close this Tab Out tab to save memory
+      await chrome.windows.update(newWin.id, { focused: true });
+      setTimeout(async () => {
+        const self = await chrome.tabs.getCurrent();
+        if (self) chrome.tabs.remove(self.id);
+      }, 600); // brief delay so confetti has time to render
     });
   }
 
@@ -2080,23 +2089,26 @@ function isColorDark(hex) {
 }
 
 // ── Confetti ──────────────────────────────
-function confetti(el) {
+function confettiPalette(el, colors, count = 30) {
   const r = el.getBoundingClientRect();
   const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
-  const colors = ['#4a8a5a','#88c4a0','#a4c8e4','#f0d090','#ffffff','#b8d4be','#e8c4a0'];
-  for (let i = 0; i < 22; i++) {
+  for (let i = 0; i < count; i++) {
     const p = document.createElement('div');
     p.className = 'cp';
-    const sz    = 5 + Math.random() * 5;
-    const angle = (Math.PI * 2 * i / 22) + (Math.random() - 0.5) * 0.6;
-    const spd   = 70 + Math.random() * 110;
+    const sz    = 5 + Math.random() * 6;
+    const angle = (Math.PI * 2 * i / count) + (Math.random() - 0.5) * 0.5;
+    const spd   = 80 + Math.random() * 130;
     const dx    = Math.cos(angle) * spd;
-    const dy    = Math.sin(angle) * spd - 55;
+    const dy    = Math.sin(angle) * spd - 65;
     p.style.cssText = `left:${cx}px;top:${cy}px;width:${sz}px;height:${sz}px;` +
                       `background:${colors[i % colors.length]};--dx:${dx}px;--dy:${dy}px`;
     document.body.appendChild(p);
     setTimeout(() => p.remove(), 750);
   }
+}
+
+function confetti(el) {
+  confettiPalette(el, ['#4a8a5a','#88c4a0','#a4c8e4','#f0d090','#ffffff','#b8d4be','#e8c4a0']);
 }
 
 // ── Util ──────────────────────────────────
