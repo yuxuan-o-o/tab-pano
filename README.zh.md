@@ -11,7 +11,7 @@
 ## 预览
 
 <div align="center">
-<video src="https://github.com/user-attachments/assets/16d00221-f83c-44ad-b1b2-1fd1bf5f7422" controls autoplay loop muted></video>
+<video src="https://github.com/user-attachments/assets/01961c42-9936-4640-8c61-bc39251e26c4" controls autoplay loop muted></video>
 </div>
 
 ---
