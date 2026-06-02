@@ -569,8 +569,7 @@ function setupDupBtn() {
     const extras = getDuplicates();
     if (!extras.length) return;
     await Promise.all(extras.map(t => chrome.tabs.remove(t.id).catch(() => {})));
-    cachedWindows = await chrome.windows.getAll({ populate: true });
-    renderTabs();
+    loadTabs(); // re-fetch + re-render everything, which also calls updateDupBtn()
   });
 }
 
