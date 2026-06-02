@@ -564,14 +564,99 @@ function updateDupBtn() {
   label.textContent = `${extras.length} duplicate${extras.length > 1 ? 's' : ''}`;
 }
 
+const DUP_PANEL_THRESHOLD = 3; // show review panel if duplicates ≥ this
+
 function setupDupBtn() {
-  document.getElementById('dupBtn').addEventListener('click', async () => {
+  document.getElementById('dupBtn').addEventListener('click', () => {
     const extras = getDuplicates();
     if (!extras.length) return;
-    await Promise.all(extras.map(t => chrome.tabs.remove(t.id).catch(() => {})));
-    cachedWindows = await chrome.windows.getAll({ populate: true });
-    renderTabs();
+
+    // Few duplicates → close immediately, no friction
+    if (extras.length < DUP_PANEL_THRESHOLD) {
+      closeExtras(extras);
+      return;
+    }
+
+    // Many duplicates → show review panel
+    const existing = document.getElementById('dupPanel');
+    if (existing) { existing.remove(); return; } // toggle off
+    renderDupPanel(extras);
   });
+}
+
+async function closeExtras(extras) {
+  await Promise.all(extras.map(t => chrome.tabs.remove(t.id).catch(() => {})));
+  cachedWindows = await chrome.windows.getAll({ populate: true });
+  document.getElementById('dupPanel')?.remove();
+  renderTabs();
+}
+
+function renderDupPanel(extras) {
+  // Group extras by URL to show "Title — X copies will be closed"
+  const byUrl = new Map();
+  for (const t of extras) {
+    if (!byUrl.has(t.url)) byUrl.set(t.url, []);
+    byUrl.get(t.url).push(t);
+  }
+
+  const panel = document.createElement('div');
+  panel.id = 'dupPanel';
+  panel.className = 'dup-panel';
+
+  const header = document.createElement('div');
+  header.className = 'dup-panel-header';
+  header.innerHTML = `<span>Keeping the first of each — closing <strong>${extras.length}</strong> extra${extras.length > 1 ? 's' : ''}</span>`;
+  panel.appendChild(header);
+
+  const list = document.createElement('div');
+  list.className = 'dup-panel-list';
+
+  byUrl.forEach((tabs, url) => {
+    const row = document.createElement('div');
+    row.className = 'dup-row';
+
+    const fav = document.createElement('img');
+    fav.className = 'dup-fav';
+    fav.width = fav.height = 14;
+    try { fav.src = `https://www.google.com/s2/favicons?domain=${new URL(url).hostname}&sz=32`; } catch {}
+    fav.onerror = () => { fav.style.display = 'none'; };
+
+    const title = document.createElement('span');
+    title.className = 'dup-title';
+    title.textContent = tabs[0].title || url;
+
+    const count = document.createElement('span');
+    count.className = 'dup-count';
+    count.textContent = `×${tabs.length + 1}`; // extras + the one we keep
+
+    row.appendChild(fav);
+    row.appendChild(title);
+    row.appendChild(count);
+    list.appendChild(row);
+  });
+
+  panel.appendChild(list);
+
+  const actions = document.createElement('div');
+  actions.className = 'dup-panel-actions';
+
+  const confirmBtn = document.createElement('button');
+  confirmBtn.className = 'pill-btn dup-confirm-btn';
+  confirmBtn.textContent = `Close ${extras.length} extras`;
+  confirmBtn.onclick = () => closeExtras(extras);
+
+  const cancelBtn = document.createElement('button');
+  cancelBtn.className = 'pill-btn dup-cancel-btn';
+  cancelBtn.textContent = 'Cancel';
+  cancelBtn.onclick = () => panel.remove();
+
+  actions.appendChild(confirmBtn);
+  actions.appendChild(cancelBtn);
+  panel.appendChild(actions);
+
+  // Insert right after meta-row
+  const metaRow = document.querySelector('.meta-row');
+  metaRow.insertAdjacentElement('afterend', panel);
 }
 
 // ── Tab Search ────────────────────────────
