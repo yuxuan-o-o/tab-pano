@@ -21,6 +21,14 @@
     "48":  "icons/icon48.png",
     "128": "icons/icon128.png"
   },
+  "action": {
+    "default_icon": {
+      "16":  "icons/icon16.png",
+      "48":  "icons/icon48.png",
+      "128": "icons/icon128.png"
+    },
+    "default_title": "Tab Pano"
+  },
   "web_accessible_resources": [
     {
       "resources": ["wallpapers/*.png", "wallpapers/*.jpg", "wallpapers/*.webp"],
