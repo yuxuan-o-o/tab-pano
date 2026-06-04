@@ -1,8 +1,8 @@
-# Tab Out
+# Tab Pano
 
 **A beautiful new tab page that turns tab chaos into clarity.**
 
-Remixed from [Zara Zhang](https://x.com/zarazhangrui)'s [original Tab Out](https://github.com/zarazhangrui/tab-out) — rebuilt and extended with new features for power users and designers.
+A remix of [Zara Zhang](https://x.com/zarazhangrui)'s [Tab Out](https://github.com/zarazhangrui/tab-out) — rebuilt and extended with new features for power users and designers. All credit to Zara for the original concept and foundation.
 
 > made with ♥ by [Zara Zhang](https://x.com/zarazhangrui) · [AI](https://anthropic.com/product/claude-code) · [Yuxuan Hou](https://x.com/yuxuan_o_o)
 

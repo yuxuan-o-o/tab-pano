@@ -1,8 +1,8 @@
-# Tab Out
+# Tab Pano
 
 **一个让标签页混乱变得井然有序的新标签页。**
 
-基于 [Zara Zhang](https://x.com/zarazhangrui) 的[原版 Tab Out](https://github.com/zarazhangrui/tab-out) 进行二次创作，新增了面向重度用户和设计师的功能。
+基于 [Zara Zhang](https://x.com/zarazhangrui) 的[原版 Tab Out](https://github.com/zarazhangrui/tab-out) 进行二次创作，新增了面向重度用户和设计师的功能。概念和基础代码的所有功劳归属于 Zara。
 
 > made with ♥ by [Zara Zhang](https://x.com/zarazhangrui) · [AI](https://anthropic.com/product/claude-code) · [Yuxuan Hou](https://x.com/yuxuan_o_o)
 
