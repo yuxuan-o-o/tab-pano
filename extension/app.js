@@ -622,10 +622,10 @@ function setupSearch() {
       if (_tsdIdx >= 0 && items[_tsdIdx]) {
         items[_tsdIdx].click(); return;
       }
-      // Otherwise → Google search
+      // Otherwise → search using user's default search engine
       const q = input.value.trim();
       if (q) {
-        window.open(`https://www.google.com/search?q=${encodeURIComponent(q)}`, '_blank');
+        chrome.search.query({ text: q, disposition: 'NEW_TAB' });
         input.value = '';
         closeTsd();
       }
