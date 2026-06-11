@@ -772,6 +772,10 @@ body[data-mode="dark"][data-style="solid"] .window-header-count:hover {
 body[data-layout="one-col"] .domain-grid {
   grid-template-columns: 1fr;
 }
+/* A lone card in two-col layout spans both columns so the window header aligns */
+body[data-layout="two-col"] .domain-grid .group-card:only-child {
+  grid-column: 1 / -1;
+}
 @media (max-width: 720px) {
   .domain-grid { grid-template-columns: 1fr; }
   .page { padding: 28px 20px 60px; }
