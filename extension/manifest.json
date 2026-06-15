@@ -39,8 +39,7 @@
     "tabs",
     "windows",
     "storage",
-    "unlimitedStorage",
-    "search"
+    "unlimitedStorage"
   ],
   "host_permissions": [
     "<all_urls>",

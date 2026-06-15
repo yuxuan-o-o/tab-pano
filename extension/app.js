@@ -618,17 +618,11 @@ function setupSearch() {
       closeTsd(); input.blur(); return;
     }
     if (e.key === 'Enter') {
-      // If a tab result is highlighted → jump to it
+      // Jump to highlighted tab result, or first result if none highlighted
       if (_tsdIdx >= 0 && items[_tsdIdx]) {
         items[_tsdIdx].click(); return;
       }
-      // Otherwise → search using user's default search engine
-      const q = input.value.trim();
-      if (q) {
-        chrome.search.query({ text: q, disposition: 'NEW_TAB' });
-        input.value = '';
-        closeTsd();
-      }
+      if (items[0]) { items[0].click(); return; }
     }
   });
 
