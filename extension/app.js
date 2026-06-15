@@ -962,7 +962,10 @@ function buildDomainCard(domain, tabs, bgColor, aiEmoji = null) {
   if (favImg) favImg.addEventListener('error', () => { favImg.style.display = 'none'; });
 
   const body = card.querySelector('.group-body');
-  renderList(body, tabs);
+  // Respect the current global view setting
+  card.querySelectorAll('.vtm-btn').forEach(b => b.classList.toggle('active', b.dataset.view === S.view));
+  if (S.view === 'grid') renderGrid(body, tabs);
+  else renderList(body, tabs);
 
   // Per-card view toggle
   card.querySelectorAll('.vtm-btn').forEach(btn => {
