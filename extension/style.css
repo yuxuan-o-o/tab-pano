@@ -993,7 +993,7 @@ body[data-mode="dark"][data-style="solid"] .group-card {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 7px;
-  padding: 0 8px 12px;
+  padding: 0 15px 15px;
 }
 /* More columns when the card spans full page width, so cells stay thumbnail-sized */
 body[data-layout="one-col"] .group-body.view-grid {
