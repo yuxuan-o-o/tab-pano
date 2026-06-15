@@ -5,7 +5,7 @@
 // ── Constants ─────────────────────────────
 // Must come BEFORE S so the object literal can reference DEFAULT_BG
 // without hitting the temporal dead zone.
-const DEFAULT_BG = 'bundled:forest'; // first-install default background
+const DEFAULT_BG = 'bundled:sky'; // first-install default background
 
 // ── State ─────────────────────────────────
 const S = {
@@ -1636,9 +1636,9 @@ const DEFAULT_BG_COLORS = ['#BED3E8', '#EAEAEA', '#0C0B0F'];
 // ── Bundled wallpapers (shipped with the extension, used as default slot values on first install) ──
 // Users can delete these and upload their own — they behave exactly like user-uploaded images.
 const BUNDLED_WALLPAPERS = [
-  { key: 'bundled:forest',     url: 'wallpapers/forest.jpg',     label: 'Forest'     },
-  { key: 'bundled:ocean',      url: 'wallpapers/ocean.jpg',      label: 'Ocean'      },
-  { key: 'bundled:urban',      url: 'wallpapers/urban.jpg',      label: 'Urban'      },
+  { key: 'bundled:sky',      url: 'wallpapers/sky.jpg',      label: 'Sky'      },
+  { key: 'bundled:forest',   url: 'wallpapers/forest.jpg',   label: 'Forest'   },
+  { key: 'bundled:mountain', url: 'wallpapers/mountain.jpg', label: 'Mountain' },
 ];
 
 function getBgColors() {
