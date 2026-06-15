@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Tab Pano",
   "version": "0.1.0",
-  "description": "Panoramic tab management across all your windows, with AI grouping, image view, and instant search.",
+  "description": "Panoramic tab management across all your windows, with AI grouping, image view, and instant tab search.",
   "chrome_url_overrides": {
     "newtab": "newtab.html"
   },
