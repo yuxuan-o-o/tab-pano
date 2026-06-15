@@ -912,8 +912,7 @@ function buildDomainCard(domain, tabs, bgColor, aiEmoji = null) {
     iconHtml = `
       <div class="group-icon" style="background:${bgColor}">
         <img src="https://www.google.com/s2/favicons?domain=${domain}&sz=32"
-             alt="" style="width:20px;height:20px;border-radius:4px"
-             onerror="this.style.display='none'">
+             alt="" style="width:20px;height:20px;border-radius:4px">
       </div>`;
   }
 
@@ -958,6 +957,9 @@ function buildDomainCard(domain, tabs, bgColor, aiEmoji = null) {
     </div>
     <div class="group-body"></div>
   `;
+
+  const favImg = card.querySelector('.group-icon img');
+  if (favImg) favImg.addEventListener('error', () => { favImg.style.display = 'none'; });
 
   const body = card.querySelector('.group-body');
   renderList(body, tabs);
