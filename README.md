@@ -2,7 +2,11 @@
 
 **A beautiful new tab page that turns tab chaos into clarity.**
 
-A remix of [Zara Zhang](https://x.com/zarazhangrui)'s [Tab Out](https://github.com/zarazhangrui/tab-out) — rebuilt and extended with new features for power users and designers. All credit to Zara for the original concept and foundation.
+<a href="https://chromewebstore.google.com/detail/bfhfpaajnkdbfldegeoimjdfjbnacnof">
+  <img src="https://img.shields.io/badge/Chrome%20Web%20Store-Install%20Tab%20Pano-4285F4?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Install from Chrome Web Store">
+</a>
+
+A remix of [Zara Zhang](https://x.com/zarazhangrui)'s [Tab Out](https://github.com/zarazhangrui/tab-out) — rebuilt and extended with new features for power users and designers. All credit to Zara for the original concept.
 
 > made with ♥ by [Zara Zhang](https://x.com/zarazhangrui) · [AI](https://anthropic.com/product/claude-code) · [Yuxuan Hou](https://x.com/yuxuan_o_o)
 
@@ -32,13 +36,13 @@ Pin your most-visited sites as icon shortcuts at the top. One click, always ther
 ### 4. Organize with AI
 Domain-based grouping isn't always enough — a designer collecting inspiration from Dribbble, Pinterest, Behance, and random blogs needs smarter grouping. Click **Organize with AI** and your tabs get re-grouped semantically, based on what they're actually about.
 
-Supports **Claude**, **OpenAI**, and **Gemini** — just paste your API key and Tab Out auto-detects the provider. Keys are stored locally and never leave your browser.
+Supports **Claude**, **OpenAI**, and **Gemini** — just paste your API key and Tab Pano auto-detects the provider. Keys are stored locally and never leave your browser.
 
 ### 5. Save for later
 Bookmark tabs you don't want to close but aren't ready to act on. They live in a dedicated **Saved** section at the top, separate from your open tabs.
 
 ### 6. View options
-Customize how Tab Out looks and feels:
+Customize how Tab Pano looks and feels:
 - **Layout** — one column or two columns
 - **View** — list or image grid
 - **Style** — glass (translucent) or solid
@@ -49,11 +53,17 @@ Customize how Tab Out looks and feels:
 
 ## Install
 
+### Option 1: Chrome Web Store (recommended)
+
+**[Install Tab Pano from Chrome Web Store](https://chromewebstore.google.com/detail/bfhfpaajnkdbfldegeoimjdfjbnacnof)**
+
+### Option 2: Load manually for development
+
 1. Clone or download this repo
 2. Open Chrome → `chrome://extensions`
 3. Enable **Developer mode** (top right)
 4. Click **Load unpacked** → select the `extension/` folder
-5. Open a new tab ✨
+5. Open a new tab
 
 ---
 
